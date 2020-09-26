@@ -226,32 +226,56 @@ public class MyResource {
     	return (Bill) list.get(1);
     } 
     
-    @Path("allocate/{details}")
+    /*@Path("allocate/{details}")
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String allocate(@PathParam("details") String details){
-    	String   words[];
-    	int vehicleId,transactionId;
-    	words = details.split(" ");
-    	vehicleId = Integer.parseInt(words[0]);
-    	transactionId = Integer.parseInt(words[1]);
+    @Produces(MediaType.APPLICATION_JSON)*/
+    @Path("allocate")
+    @POST    
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
+    public void allocate(@FormDataParam("customer") int transactionId,
+    		@FormDataParam("driver") int vehicleId){
+    		//@FormDataParam("manager") Object manager ){
+    	System.out.println("In allocate method!");
+    	
+    	
     	Driver driver = new Driver();
     	DriverDAO driverDAO = new DriverDAO();
     	driver = driverDAO.getDriver(vehicleId);
-    	driver.setDriverStatus(true);
+    	/*driver.setDriverStatus(true);
     	driverDAO.updateRecord(driver);
-    	
+    	*/
     	Record record = new Record();
+    	RecordDAO recordDAO = new RecordDAO();
+    	record = recordDAO.getRecord(transactionId);
+    	//record.setManager(driver.getManager());
+    	recordDAO.updateRecord(record);
+    	//System.out.println(manager);
+    	//
+    	
+    	/*Driver driver = new Driver();
+    	DriverDAO driverDAO = new DriverDAO();
+    	driver = driverDAO.getDriver(vehicleId);
+    	driver.setDriverStatus(true);
+    	System.out.println(driver);
+    	//driverDAO.updateRecord(driver);
+    	
+    	/*Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
     	record.setManager(driver.getManager());
     	recordDAO.updateRecord(record);
     	
+    	System.out.println("Doneeeeeeeeeee!!!!!!!");
+    	/*emailSending emailSending = new emailSending();
+    	emailSending.sendEmail(record, driver);
     	
-    	emailSending emailSending = new emailSending();
-    	emailSending.sendEmail(record, driver);    	
-    	System.out.println("Driver allocated to customer!!!");
-    	return "Driver allocated to Customer";
+    	//return "Driver allocated to Customer";*/
+    }
+    
+    public Driver updateDriver(Driver driver){
+    	DriverDAO driverDAO = new DriverDAO();
+    	System.out.println(driverDAO.updateRecord(driver));
+    	return driver;
     }
     
     @Path("rejectCustomer/{details}")
@@ -290,19 +314,12 @@ public class MyResource {
     	
     }
     
-    @Path("confirmCustomer/{details}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public int confirmCustomer(@PathParam("details") String details){
-    	String  words[];
-    	words = details.split(" ");
-    	int otp = Integer.parseInt(words[1]);
-    	int transactionId = Integer.parseInt(words[0]);
-    	Record record = new Record();
+    @Path("confirmCustomer")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int confirmCustomer(Record record){
     	RecordDAO recordDAO = new RecordDAO();
-    	record = recordDAO.getRecord(transactionId);
-    	record.setOtp(otp);
-    	recordDAO.updateRecord(record);    	
+    	System.out.println(recordDAO.updateRecord(record));
     	return 0;    	
     	
     } 

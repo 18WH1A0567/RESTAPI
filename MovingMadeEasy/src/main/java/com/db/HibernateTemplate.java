@@ -158,7 +158,7 @@ public class HibernateTemplate {
 			tx.commit();
 			
 			result=1;
-			session.close();
+			
 		} catch (Exception e) {
 		
 			tx.rollback();			
