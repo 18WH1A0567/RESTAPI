@@ -92,6 +92,7 @@ public class MyResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public int deleteDriver(Driver driver){
+    	System.out.println("in delete driver");
     	DriverDAO driverDAO = new DriverDAO();
     	return driverDAO.deleteDriver(driver.getVehicleId());
     	
@@ -241,10 +242,10 @@ public class MyResource {
     	Driver driver = new Driver();
     	DriverDAO driverDAO = new DriverDAO();
     	driver = driverDAO.getDriver(vehicleId);
-    	/*driver.setDriverStatus(true);
+    	driver.setDriverStatus(true);
     	driverDAO.updateRecord(driver);
-    	*/
-    	Record record = new Record();
+    	
+    	/*Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
     	//record.setManager(driver.getManager());
@@ -272,29 +273,25 @@ public class MyResource {
     	//return "Driver allocated to Customer";*/
     }
     
-    public Driver updateDriver(Driver driver){
-    	DriverDAO driverDAO = new DriverDAO();
-    	System.out.println(driverDAO.updateRecord(driver));
-    	return driver;
-    }
     
-    @Path("rejectCustomer/{details}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public String rejectCustomer(@PathParam("details") String details){
-    	String words[];
-    	int transactionId;
-    	String branch, msg;
-    	words = details.split(" ");
-    	msg = words[0];
-    	transactionId = Integer.parseInt(words[1]);
-    	branch = words[2];
+    @Path("rejectCustomer")
+    @POST
+    @Consumes({MediaType.MULTIPART_FORM_DATA})
+    public String rejectCustomer(@FormDataParam("customer") int transactionId,
+    		@FormDataParam("message") String message){
+    	
+    	System.out.println("In reject method!");
     	Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
     	ManagerDAO managerDAO = new ManagerDAO();
     	Manager manager = new Manager();
-    	manager = managerDAO.getManagerByBranch(branch);
+    	manager = managerDAO.getManager("blockList");
+    	record.setManager(manager);
+    	recordDAO.updateRecord(record);
+    	System.out.println(message);
+    	emailSending emailSending = new emailSending();
+    	emailSending.rejectionMail(record, message);
     	
     	return "Driver allocated to Customer";
     }

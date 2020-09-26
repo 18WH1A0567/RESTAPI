@@ -115,5 +115,54 @@ public class emailSending {
 	            e.printStackTrace();
 	        }
 	    }
+	
+	public void rejectionMail(Record record, String msg){
+		System.out.println("In mail sending");
+
+        final String username = "movingmadeeasy2001@gmail.com";
+        final String password = "movingmadeeasy";
+        
+        String sendMessage = "Dear " + record.getCustName() +" ,\n" + 
+        					"We have received your request for availing our service.\n" +
+        					"But we are sorry to inform you that we may not be able to provide you the service this time.\n" + 
+        					"We hope you understand. Thank you for your cooperation and trust! " +
+        					"Message from the team: " + msg + 
+        					"\nHave a great day!";
+        					
+        					
+        
+        Properties prop = new Properties();
+        prop.put("mail.smtp.host", "smtp.gmail.com");
+        prop.put("mail.smtp.port", "587");
+        prop.put("mail.smtp.auth", "true");
+        prop.put("mail.smtp.starttls.enable", "true"); //TLS
+
+        Session session = Session.getInstance(prop,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("movingmadeeasy2001@gmail.com"));
+            message.setRecipients(
+                    Message.RecipientType.TO,
+                    InternetAddress.parse(record.getEmail())
+            );
+            message.setSubject("Sorry for the inconvenience! ");
+            message.setText(sendMessage);
+
+            Transport.send(message);
+
+            System.out.println("Done");
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        
+	}
 }
 

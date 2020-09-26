@@ -42,7 +42,7 @@ public class HibernateTemplate {
 			
 			tx.commit();			
 			result=1;
-			
+			session.close();
 		}catch (Exception e){		
 			if (tx != null) {
 			    tx.rollback();
@@ -158,12 +158,14 @@ public class HibernateTemplate {
 			tx.commit();
 			
 			result=1;
+			session.close();
 			
 		} catch (Exception e) {
 		
 			tx.rollback();			
 			e.printStackTrace();
 		}		
+		
 		return result;
 	}
 	
