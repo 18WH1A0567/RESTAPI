@@ -42,7 +42,7 @@ public class HibernateTemplate {
 			
 			tx.commit();			
 			result=1;
-			session.close();
+			
 		}catch (Exception e){		
 			if (tx != null) {
 			    tx.rollback();
@@ -64,7 +64,7 @@ public class HibernateTemplate {
 			session.delete(obj);			
 			tx.commit();			
 			result=1; 
-			session.close();
+			
 						
 		} catch (Exception e) {
 			
@@ -158,7 +158,7 @@ public class HibernateTemplate {
 			tx.commit();
 			
 			result=1;
-			session.close();
+			
 			
 		} catch (Exception e) {
 		

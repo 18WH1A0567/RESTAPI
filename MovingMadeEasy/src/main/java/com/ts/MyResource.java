@@ -61,16 +61,7 @@ public class MyResource {
 		
     }
     
-    @Path("deleteManager")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public int deleteManager(Manager manager){
-    	ManagerDAO managerDAO = new ManagerDAO();
-    	return managerDAO.deleteManager(manager.getLoginId());
-    	
-    }
-    
-    
+   
     
    // DRIVER REGISTER
     @Path("registerDriver")
@@ -107,6 +98,16 @@ public class MyResource {
     	records = recordDAO.getAllCustomers();
     	System.out.println(records);
     	return records;
+    	
+    }
+    
+    @Path("deleteManager")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int deleteManager(Manager manager){
+    	System.out.println("in delete manager");
+    	ManagerDAO managerDAO = new ManagerDAO();
+    	return managerDAO.deleteManager(manager.getLoginId());
     	
     }
     
@@ -248,8 +249,8 @@ public class MyResource {
     	/*Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
-    	//record.setManager(driver.getManager());
-    	recordDAO.updateRecord(record);
+    	record.setManager(driver.getManager());
+    	System.out.println(recordDAO.updateRecord(record));
     	//System.out.println(manager);
     	//
     	
