@@ -26,6 +26,12 @@ private SessionFactory factory = null;
 		return records;	
 	}
 	
+	public List<Record> getAllCustomersByAdminToAllocate(){
+		List<Record> records=(List)HibernateTemplate.getObjectListByQuery("From Record where managerId = NULL");
+		System.out.println("Inside All Customers ..."+records.size());
+		return records;
+	}
+	
 	public List<Record> seeAllRequests(String managerBranch){
 		//String query = "from Customer where managerId is NULL and source is " + managerBranch;
 		//HibernateTemplate.deleteExtras();

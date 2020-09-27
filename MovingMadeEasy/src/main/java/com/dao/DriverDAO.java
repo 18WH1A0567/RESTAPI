@@ -26,6 +26,14 @@ private SessionFactory factory = null;
 		return drivers;	
 	}
 	
+	public List<Driver> getAllDriversToAllocate() {
+		List<Driver> drivers = (List)HibernateTemplate.getObjectListByQuery("From Driver where driverStatus = 0");
+		System.out.println("Inside All Drivers ..."+drivers);
+		return drivers;	
+	}
+	
+	
+	
 	//BRANCH WISE
 	public List<Driver> getAllDrivers(String branch){
 		List<Driver> drivers = (List)HibernateTemplate.getObjectListByName(Driver.class, "driverBranch", branch);

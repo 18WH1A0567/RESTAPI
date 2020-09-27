@@ -101,6 +101,18 @@ public class MyResource {
     	
     }
     
+    @Path("getAllCustomersByAdminToAllocate")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Record> getAllCustomersByAdminToAllocate(){
+    	List<Record> records = new ArrayList<Record>();
+    	RecordDAO recordDAO = new RecordDAO();
+    	records = recordDAO.getAllCustomersByAdminToAllocate();
+    	System.out.println(records);
+    	return records;
+    	
+    }
+    
     @Path("deleteManager")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -143,6 +155,18 @@ public class MyResource {
     	List<Driver> drivers = new ArrayList<Driver>();
     	DriverDAO driverDAO = new DriverDAO();
     	drivers = driverDAO.getAllDrivers(branch);
+    	return drivers;
+    	
+    }
+    
+    @Path("getAllDriversToAllocate")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Driver> getAllDriversToAllocate(){
+    	System.out.println("In getalldrivers ");
+    	List<Driver> drivers = new ArrayList<Driver>();
+    	DriverDAO driverDAO = new DriverDAO();
+    	drivers = driverDAO.getAllDriversToAllocate();
     	return drivers;
     	
     }
@@ -246,32 +270,15 @@ public class MyResource {
     	driver.setDriverStatus(true);
     	driverDAO.updateRecord(driver);
     	
-    	/*Record record = new Record();
+    	Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
     	record.setManager(driver.getManager());
     	System.out.println(recordDAO.updateRecord(record));
-    	//System.out.println(manager);
-    	//
-    	
-    	/*Driver driver = new Driver();
-    	DriverDAO driverDAO = new DriverDAO();
-    	driver = driverDAO.getDriver(vehicleId);
-    	driver.setDriverStatus(true);
-    	System.out.println(driver);
-    	//driverDAO.updateRecord(driver);
-    	
-    	/*Record record = new Record();
-    	RecordDAO recordDAO = new RecordDAO();
-    	record = recordDAO.getRecord(transactionId);
-    	record.setManager(driver.getManager());
-    	recordDAO.updateRecord(record);
-    	
-    	System.out.println("Doneeeeeeeeeee!!!!!!!");
-    	/*emailSending emailSending = new emailSending();
+    	emailSending emailSending = new emailSending();
     	emailSending.sendEmail(record, driver);
     	
-    	//return "Driver allocated to Customer";*/
+    	
     }
     
     
@@ -290,7 +297,6 @@ public class MyResource {
     	manager = managerDAO.getManager("blockList");
     	record.setManager(manager);
     	recordDAO.updateRecord(record);
-    	System.out.println(message);
     	emailSending emailSending = new emailSending();
     	emailSending.rejectionMail(record, message);
     	

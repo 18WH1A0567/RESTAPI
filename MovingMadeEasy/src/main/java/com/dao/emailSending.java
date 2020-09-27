@@ -126,7 +126,7 @@ public class emailSending {
         					"We have received your request for availing our service.\n" +
         					"But we are sorry to inform you that we may not be able to provide you the service this time.\n" + 
         					"We hope you understand. Thank you for your cooperation and trust! " +
-        					"Message from the team: " + msg + 
+        					"\nMessage from the team: " + msg + 
         					"\nHave a great day!";
         					
         					
