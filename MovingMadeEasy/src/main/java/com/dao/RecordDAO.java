@@ -27,7 +27,7 @@ private SessionFactory factory = null;
 	}
 	
 	public List<Record> getAllCustomersByAdminToAllocate(){
-		List<Record> records=(List)HibernateTemplate.getObjectListByQuery("From Record where managerId = NULL");
+		List<Record> records=(List)HibernateTemplate.getObjectListByQuery("From Record where managerId = NULL and otp > 0");
 		System.out.println("Inside All Customers ..."+records.size());
 		return records;
 	}

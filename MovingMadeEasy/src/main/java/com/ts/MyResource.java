@@ -273,12 +273,29 @@ public class MyResource {
     	Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
-    	record.setManager(driver.getManager());
+    	//record.setManager(driver.getManager());
     	System.out.println(recordDAO.updateRecord(record));
-    	emailSending emailSending = new emailSending();
+    	//System.out.println(manager);
+    	//
+    	
+    	/*Driver driver = new Driver();
+    	DriverDAO driverDAO = new DriverDAO();
+    	driver = driverDAO.getDriver(vehicleId);
+    	driver.setDriverStatus(true);
+    	System.out.println(driver);
+    	//driverDAO.updateRecord(driver);
+    	
+    	/*Record record = new Record();
+    	RecordDAO recordDAO = new RecordDAO();
+    	record = recordDAO.getRecord(transactionId);
+    	record.setManager(driver.getManager());
+    	recordDAO.updateRecord(record);
+    	
+    	System.out.println("Doneeeeeeeeeee!!!!!!!");
+    	/*emailSending emailSending = new emailSending();
     	emailSending.sendEmail(record, driver);
     	
-    	
+    	//return "Driver allocated to Customer";*/
     }
     
     
