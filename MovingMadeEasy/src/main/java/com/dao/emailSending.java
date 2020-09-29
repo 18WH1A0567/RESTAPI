@@ -71,17 +71,19 @@ public class emailSending {
 	        final String password = "movingmadeeasy";
 	        
 	        String sendMessage = "Dear " + record.getCustName() +",\nWe have received your request for transport." +
-	        "\nHere are the details of the driver allocated to you\n" +
-	        "Transaction Id:" + record.getTransactionId() + "\n" +
-	        "Driver Name: " + driver.getDriverName() + "\n" + 
-	        "Driver Phone: " + driver.getDriverPhone() + "\n" +
-	        "Vehicle Number: " + driver.getVehicleId() + "\n" +
-	        "Vehilce Type: " + driver.getVehicleType() + "\n" +
-	        "Total Amount: Rs." + (int)record.getBill() + " only\n" +
-	        "\nAdvance amount must be paid prior to the service to the staff while packing." + "\n" +
-	        "\nYou can get in touch with the driver" + "\n" + 
- 	        "The balance amount must be paid post service." + "\n" + 
-	        "Thanks for choosing us.\nWe wish to serve you again.";
+	    	        "\nHere are the details of the driver allocated to you\n" +
+	    	        "Transaction Id:" + record.getTransactionId() + "\n" +
+	    	        "Driver Name: " + driver.getDriverName() + "\n" + 
+	    	        "Driver Phone: " + driver.getDriverPhone() + "\n" +
+	    	        "Vehicle Number: " + driver.getVehicleId() + "\n" +
+	    	        "Vehilce Type: " + driver.getVehicleType() + "\n" +
+	    	        "Total Amount: Rs." + (int)record.getBill() + " only\n" +
+	    	        "\nAdvance amount must be paid prior to the service to the staff while packing." + "\n" +
+	    	        "\nYou can get in touch with the driver" + "\n" + 
+	     	        "The balance amount must be paid post service." + "\n" + 
+	    	        "Thanks for choosing us.\nWe wish to serve you again." + 
+	     	        "\nFor any queries: Contact " + record.getManager().getManagerName() +".\n" +
+	    	        "Phone: " + record.getManager().getManagerPhone() +".\n";
 
 	        Properties prop = new Properties();
 	        prop.put("mail.smtp.host", "smtp.gmail.com");

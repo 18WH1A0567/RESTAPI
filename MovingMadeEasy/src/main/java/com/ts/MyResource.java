@@ -27,6 +27,9 @@ import com.dto.Bill;
 import com.dto.Driver;
 import com.dto.Manager;
 import com.dto.Record;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Path("myresource")
 public class MyResource {
@@ -112,37 +115,6 @@ public class MyResource {
     	return records;
     	
     }
-    
-    @Path("updateCustomer")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public int updateCustomer(Record record){
-    	System.out.println("In update customer");
-    	ManagerDAO managerDAO = new ManagerDAO();
-    	Manager manager = new Manager();
-    	manager = managerDAO.getManagerByBranch(record.getResidentState());
-    	System.out.println(manager.getManagerName());
-    	record.setManager(manager);
-    	RecordDAO recordDAO = new RecordDAO();
-    	int res = recordDAO.updateRecord(record);
-    	System.out.println(res);
-    	return res;
-    }
-    
-    @Path("updateDriver")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    public int updateDriver(int vehicleId){
-    	System.out.println("in update driver" + vehicleId);
-    	DriverDAO driverDAO = new DriverDAO();
-    	Driver driver = new Driver();
-    	driver = driverDAO.getDriver(vehicleId);
-    	driver.setDriverStatus(true);
-    	driverDAO.updateRecord(driver);
-    	return 1;
-    	
-    }
-    
     
     @Path("deleteManager")
     @POST
@@ -283,34 +255,72 @@ public class MyResource {
     	return (Bill) list.get(1);
     } 
     
-    /*@Path("allocate/{details}")
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)*/
+   
     @Path("allocate")
     @POST    
-    @Consumes({MediaType.MULTIPART_FORM_DATA})
-    public void allocate(@FormDataParam("customer") int transactionId,
-    		@FormDataParam("driver") int vehicleId){
-    	System.out.println("In allocate method!");
-    	
-    	
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public void allocate(
+    		@FormDataParam("customer") String customer,
+    		@FormDataParam("driverstr") String driverstr,
+    		@FormDataParam("managerstr") String managerstr) throws JsonParseException, JsonMappingException, IOException {
+    	System.out.println("In allocate method");
+    	System.out.println(managerstr.length());
+    	ObjectMapper mapper = new ObjectMapper();
+    	Record record = new Record();
     	Driver driver = new Driver();
-    	DriverDAO driverDAO = new DriverDAO();
-    	driver = driverDAO.getDriver(vehicleId);
-    	
     	Manager manager = new Manager();
     	ManagerDAO managerDAO = new ManagerDAO();
-    	manager = managerDAO.getManagerByBranch(driver.getDriverBranch());
-    	Record record = new Record();
+    	record = mapper.readValue(customer, Record.class);
+    	driver = mapper.readValue(driverstr, Driver.class);
+    	if(managerstr.equals("undefined")) {
+    		manager = managerDAO.getManager("admin");
+    		System.out.println("iff");
+    	}
+    	else {
+    		manager = mapper.readValue(managerstr, Manager.class);
+    		System.out.println("elsee");
+    	}
+    	System.out.println(manager.getManagerName());
+    	DriverDAO driverDAO = new DriverDAO();
     	RecordDAO recordDAO = new RecordDAO();
-    	record = recordDAO.getRecord(transactionId);
     	record.setManager(manager);
-    	recordDAO.updateRecord(record);
-    	System.out.println(record.getCustName()+ driver.getDriverName());
+    	int result = recordDAO.updateRecord(record);
+    	System.out.println(result);
+    	result = driverDAO.updateRecord(driver);
+    	System.out.println(result);    	
     	emailSending emailSending = new emailSending();
     	emailSending.sendEmail(record, driver);
     	
+    } 
+    
+    @Path("allocateByAdmin")
+    @POST    
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public void allocateByAdmin(
+    		@FormDataParam("customer") String customer,
+    		@FormDataParam("driverstr") String driverstr)throws JsonParseException, JsonMappingException, IOException {
     	
+    	
+    	ObjectMapper mapper = new ObjectMapper();
+    	Record record = new Record();
+    	Driver driver = new Driver();
+    	Manager manager = new Manager();
+    	ManagerDAO managerDAO = new ManagerDAO();
+    	System.out.println("In allocate ");
+    	record = mapper.readValue(customer, Record.class);
+    	driver = mapper.readValue(driverstr, Driver.class);
+    	System.out.println("In allocate ");
+    	manager = managerDAO.getManager("admin");
+    	System.out.println("managerName" + manager.getManagerName());
+    	DriverDAO driverDAO = new DriverDAO();
+    	RecordDAO recordDAO = new RecordDAO();
+    	record.setManager(manager);
+    	int result = recordDAO.updateRecord(record);
+    	System.out.println(result);
+    	result = driverDAO.updateRecord(driver);
+    	System.out.println(result);    	
+    	emailSending emailSending = new emailSending();
+    	emailSending.sendEmail(record, driver);
     }
     
     
@@ -429,4 +439,3 @@ public class MyResource {
 
     }*/
 }
-
