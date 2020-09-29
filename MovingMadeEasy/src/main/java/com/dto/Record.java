@@ -161,4 +161,17 @@ public class Record  {
 	}
 
 
+
+
+	@Override
+	public String toString() {
+		return "Record [transactionId=" + transactionId + ", custName=" + custName + ", custPhone=" + custPhone
+				+ ", residentState=" + residentState + ", destinationArea=" + destinationArea + ", residentArea="
+				+ residentArea + ", destinationState=" + destinationState + ", vehicleType=" + vehicleType + ", bill="
+				+ bill + ", email=" + email + ", date=" + date + ", requirements=" + requirements + ", otp=" + otp
+				+ ", manager=" + manager + "]";
+	}
+
+	
+
 }

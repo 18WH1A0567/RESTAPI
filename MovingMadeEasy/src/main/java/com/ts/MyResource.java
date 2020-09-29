@@ -113,6 +113,37 @@ public class MyResource {
     	
     }
     
+    @Path("updateCustomer")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int updateCustomer(Record record){
+    	System.out.println("In update customer");
+    	ManagerDAO managerDAO = new ManagerDAO();
+    	Manager manager = new Manager();
+    	manager = managerDAO.getManagerByBranch(record.getResidentState());
+    	System.out.println(manager.getManagerName());
+    	record.setManager(manager);
+    	RecordDAO recordDAO = new RecordDAO();
+    	int res = recordDAO.updateRecord(record);
+    	System.out.println(res);
+    	return res;
+    }
+    
+    @Path("updateDriver")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    public int updateDriver(int vehicleId){
+    	System.out.println("in update driver" + vehicleId);
+    	DriverDAO driverDAO = new DriverDAO();
+    	Driver driver = new Driver();
+    	driver = driverDAO.getDriver(vehicleId);
+    	driver.setDriverStatus(true);
+    	driverDAO.updateRecord(driver);
+    	return 1;
+    	
+    }
+    
+    
     @Path("deleteManager")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -260,42 +291,26 @@ public class MyResource {
     @Consumes({MediaType.MULTIPART_FORM_DATA})
     public void allocate(@FormDataParam("customer") int transactionId,
     		@FormDataParam("driver") int vehicleId){
-    		//@FormDataParam("manager") Object manager ){
     	System.out.println("In allocate method!");
     	
     	
     	Driver driver = new Driver();
     	DriverDAO driverDAO = new DriverDAO();
     	driver = driverDAO.getDriver(vehicleId);
-    	driver.setDriverStatus(true);
-    	driverDAO.updateRecord(driver);
     	
+    	Manager manager = new Manager();
+    	ManagerDAO managerDAO = new ManagerDAO();
+    	manager = managerDAO.getManagerByBranch(driver.getDriverBranch());
     	Record record = new Record();
     	RecordDAO recordDAO = new RecordDAO();
     	record = recordDAO.getRecord(transactionId);
-    	//record.setManager(driver.getManager());
-    	System.out.println(recordDAO.updateRecord(record));
-    	//System.out.println(manager);
-    	//
-    	
-    	/*Driver driver = new Driver();
-    	DriverDAO driverDAO = new DriverDAO();
-    	driver = driverDAO.getDriver(vehicleId);
-    	driver.setDriverStatus(true);
-    	System.out.println(driver);
-    	//driverDAO.updateRecord(driver);
-    	
-    	/*Record record = new Record();
-    	RecordDAO recordDAO = new RecordDAO();
-    	record = recordDAO.getRecord(transactionId);
-    	record.setManager(driver.getManager());
+    	record.setManager(manager);
     	recordDAO.updateRecord(record);
-    	
-    	System.out.println("Doneeeeeeeeeee!!!!!!!");
-    	/*emailSending emailSending = new emailSending();
+    	System.out.println(record.getCustName()+ driver.getDriverName());
+    	emailSending emailSending = new emailSending();
     	emailSending.sendEmail(record, driver);
     	
-    	//return "Driver allocated to Customer";*/
+    	
     }
     
     
